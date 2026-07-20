@@ -15,10 +15,11 @@ const fileUploader = document.querySelector("#fp"),
       tabContainer = document.querySelector("#tabContainer");
 
 let iCanvas = 0,
-    sFileName = "";
+    sFileName = "",
+    aDxfContent = [];
 
-let getSVGName = (sName, sCanvas) => {
-    return `${sName.slice(0, -4)}_${sCanvas.replaceAll(" ", "_")}.svg`;
+let getDxfName = (sName, sCanvas) => {
+    return `${sName.slice(0, -4)}_${sCanvas.replaceAll(" ", "_")}.dxf`;
 };
 
 fileUploader.addEventListener("change", event => {
@@ -37,14 +38,16 @@ fileUploader.addEventListener("change", event => {
             }
             if (oJSON) {
                 let oProcessed = convert.toSVG(oJSON),
+                    oDxf = convert.toDXF(oJSON),
                     a = [];
 
                 sFileName = oFile.name;
+                aDxfContent = oDxf.aCanvas.map(oCanvas => oCanvas.dxf);
 
                 oProcessed.aCanvas.forEach((oCanvas, i) => {
                     a.push(`<ui5-tab text="${oCanvas.title}" ${i === 0 ? "selected" : ""}>
                               <ui5-button id="button_${i}" class="download" icon-end design="Positive" icon="download">Download</ui5-button>
-                              <p class="file_name text-muted text-secondary mt-2">File name: <span id="file_name_${i}">${getSVGName(oFile.name, oCanvas.title)}</span></p>
+                              <p class="file_name text-muted text-secondary mt-2">File name: <span id="file_name_${i}">${getDxfName(oFile.name, oCanvas.title)}</span></p>
                               <div id="result${i}" class="result">${oCanvas.svg}</div>
                             </ui5-tab>`);
                 });
@@ -67,11 +70,11 @@ document.getElementById("tab_container").addEventListener("click", e => {
     }
 
     let sID = e.target.id.split("_").pop(),
-        sSVG = document.getElementById(`result${sID}`).innerHTML,
+        sDXF = aDxfContent[sID],
         sFile = document.getElementById(`file_name_${sID}`).innerText;
 
-    let blob = new Blob([sSVG], {
-        type: "application/xml",
+    let blob = new Blob([sDXF], {
+        type: "application/dxf",
     });
 
     util.downloadBlob(blob, sFile);
@@ -83,12 +86,12 @@ document.getElementById("download_zip").addEventListener("click", e => {
     let aFiles = [];
 
     for (let i = 0;i < iCanvas;i++) {
-        let sSVG = document.getElementById(`result${i}`).innerHTML,
+        let sDXF = aDxfContent[i],
             sFile = document.getElementById(`file_name_${i}`).innerText;
 
         aFiles.push({
-            blob: new Blob([sSVG], {
-                type: "application/xml",
+            blob: new Blob([sDXF], {
+                type: "application/dxf",
             }),
             file: sFile
         });
