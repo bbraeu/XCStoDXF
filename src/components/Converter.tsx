@@ -98,7 +98,7 @@ export default function Converter() {
                 }))
             });
             setTab(0);
-            trackEvent("Convert file");
+            trackEvent("convert_file");
         } catch {
             setError("This does not look like a valid .xcs file. Please select a project file saved by xTool Creative Space.");
         } finally {
@@ -142,7 +142,7 @@ export default function Converter() {
 
     const downloadOne = (oCanvas: CanvasResult, fmt: FormatKey) => {
         downloadBlob(blobFor(oCanvas, fmt), fileNameFor(oCanvas, fmt));
-        trackEvent(`Download ${fmt}`);
+        trackEvent(`download_${fmt}`);
     };
 
     const downloadAll = () => {
@@ -151,7 +151,7 @@ export default function Converter() {
             state.canvases.map(c => ({ blob: blobFor(c, format), file: fileNameFor(c, format) })),
             state.sourceName.replace(/\.xcs$/i, "") + ".zip"
         );
-        trackEvent("Download zip");
+        trackEvent("download_zip");
     };
 
     const active = state?.canvases[tab];
