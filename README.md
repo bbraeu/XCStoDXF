@@ -1,5 +1,12 @@
 # XCS Converter
 
+> [!IMPORTANT]
+> **This project has moved:** development continues as
+> [**XToolConverter**](https://github.com/bbraeu/XToolConverter)
+> (live at [bbraeu.github.io/XToolConverter](https://bbraeu.github.io/XToolConverter/)),
+> which additionally converts xTool Studio `.xs` project files.
+> This repository stays online but will no longer be updated.
+
 **Live: [bbraeu.github.io/XCStoDXF](https://bbraeu.github.io/XCStoDXF/)**
 
 Free, in-browser converter for xTool Creative Space `.xcs` project files —
